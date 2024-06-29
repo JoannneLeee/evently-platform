@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
  
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  const WEBHOOK_SECRET = ""
+  const WEBHOOK_SECRET = "whsec_C5q1jkWnJzmcJYJwGAX5FM/hXGE9VzrY"
  
   if (!WEBHOOK_SECRET) {
     throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local')
@@ -52,54 +52,6 @@ export async function POST(req: Request) {
   // Get the ID and type
   const { id } = evt.data;
   const eventType = evt.type;
- 
-  // if(eventType === 'user.created') {
-  //   const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
-
-  //   const user = {
-  //     clerkId: id,
-  //     email: email_addresses[0].email_address,
-  //     username: username!,
-  //     firstName: first_name!,
-  //     lastName: last_name!,
-  //     photo: image_url,
-  //   }
-
-  //   const newUser = await createUser(user);
-
-  //   if(newUser) {
-  //     await clerkClient.users.updateUserMetadata(id, {
-  //       publicMetadata: {
-  //         userId: newUser._id
-  //       }
-  //     })
-  //   }
-
-  //   return NextResponse.json({ message: 'OK', user: newUser })
-  // }
-
-  // if (eventType === 'user.updated') {
-  //   const {id, image_url, first_name, last_name, username } = evt.data
-
-  //   const user = {
-  //     firstName: first_name!,
-  //     lastName: last_name!,
-  //     username: username!,
-  //     photo: image_url,
-  //   }
-
-  //   const updatedUser = await updateUser(id, user)
-
-  //   return NextResponse.json({ message: 'OK', user: updatedUser })
-  // }
-
-  // if (eventType === 'user.deleted') {
-  //   const { id } = evt.data
-
-  //   const deletedUser = await deleteUser(id!)
-
-  //   return NextResponse.json({ message: 'OK', user: deletedUser })
-  // }
  
   return new Response('', { status: 200 })
 }
