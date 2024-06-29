@@ -1,8 +1,15 @@
+"use client"
+
 import Link from "next/link";
 import { Button } from "../../components/ui/button";
 import Image from "next/image";
+import { useEffect } from "react";
+import { getAllUser } from "@/lib/actions/user.actions";
 
 export default function Home() {
+  useEffect(()=> {
+    getAllUser()
+  }, [])
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">

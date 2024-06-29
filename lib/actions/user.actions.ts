@@ -34,6 +34,20 @@ export async function getUserById(userId: string) {
   }
 }
 
+export async function getAllUser() {
+  try {
+    await connectToDatabase()
+
+    const user = await User.find({})
+    console.log(user)
+
+    if (!user) throw new Error('User not found')
+    return JSON.parse(JSON.stringify(user))
+  } catch (error) {
+    handleError(error)
+  }
+}
+
 export async function updateUser(clerkId: string, user: UpdateUserParams) {
   try {
     await connectToDatabase()
