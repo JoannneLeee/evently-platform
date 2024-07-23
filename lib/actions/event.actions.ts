@@ -63,32 +63,41 @@ export const getEventById = async (eventId: string) => {
   }
 };
 
-export const getAllEvents = async ({
-  query,
-  limit = 6,
-  page,
-  category,
-}: GetAllEventsParams) => {
+const getCategoryByName = async (name: string) => {
+  const category =  Category.findOne({ name: { $regex: name, $options: 'i' } })
+  return category
+}
+
+export async function getAllEvents({ query, limit = 6, page, category }: GetAllEventsParams) {
   try {
-    await connectToDatabase();
+    await connectToDatabase()
 
-    const conditions = {};
+    const titleCondition = query ? { title: { $regex: query, $options: 'i' } } : {}
+    const categoryCondition = category ? await getCategoryByName(category) : null
+    const conditions = {
+      $and: [titleCondition, categoryCondition ? { category: categoryCondition._id } : {}],
+    }
+
+    console.log(conditions)
+
+    const skipAmount = (Number(page) - 1) * limit
     const eventsQuery = Event.find(conditions)
-      .sort({ createdAt: "desc" })
-      .skip(0)
-      .limit(limit);
+      .sort({ createdAt: 'desc' })
+      .skip(skipAmount)
+      .limit(limit)
 
-    const events = await populateEvent(eventsQuery);
-    const eventsCount = await Event.countDocuments(conditions);
+    const events = await populateEvent(eventsQuery)
+    const eventsCount = await Event.countDocuments(conditions)
 
     return {
       data: JSON.parse(JSON.stringify(events)),
       totalPages: Math.ceil(eventsCount / limit),
-    };
+    }
   } catch (error) {
-    handleError(error);
+    handleError(error)
   }
-};
+}
+
 
 export const deleteEvent = async ({ eventId, path }: DeleteEventParams) => {
   try {
