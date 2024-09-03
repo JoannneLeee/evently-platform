@@ -18,7 +18,7 @@ const Collection = ({
   data,
   emptyTitle,
   emptyStateSubtext,
-  page,
+  page=1,
   limit,
   totalPages,
   collectionType,
